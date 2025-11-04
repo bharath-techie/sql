@@ -115,7 +115,11 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
     private static final Logger LOGGER =
             LogManager.getLogger(OpenSearchQueryRequest.class);
 
-  /** Constructor of OpenSearchQueryRequest. */
+    // Substrait conversion extensions
+    static SimpleExtension.ExtensionCollection EXTENSIONS = SimpleExtension.loadDefaults();
+
+
+    /** Constructor of OpenSearchQueryRequest. */
   public OpenSearchQueryRequest(
       String indexName, int size, OpenSearchExprValueFactory factory, List<String> includes) {
     this(new IndexName(indexName), size, factory, includes);
@@ -358,8 +362,6 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
 
         LOGGER.info("Calcite Logical Plan after Conversion\n {}", RelOptUtil.toString(relNode));
 
-        // Substrait conversion
-        SimpleExtension.ExtensionCollection EXTENSIONS = SimpleExtension.loadDefaults();
         // RelRoot represents the root of a relational query tree with metadata
         RelRoot root = RelRoot.of(relNode, SqlKind.SELECT);
         // Need to use the Visitor's constructor to pass in custom function signatures for UDF when required.
