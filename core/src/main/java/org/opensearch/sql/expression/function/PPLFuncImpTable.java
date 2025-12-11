@@ -1410,7 +1410,7 @@ public class PPLFuncImpTable {
     } else if (typeChecker != null) {
       pplTypeChecker = PPLTypeChecker.wrapDefault(typeChecker);
     } else {
-      logger.info(
+      logger.debug(
           "Cannot create type checker for function: {}. Will skip its type checking", functionName);
       pplTypeChecker = null;
     }

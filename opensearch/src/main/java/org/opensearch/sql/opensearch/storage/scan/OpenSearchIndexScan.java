@@ -87,7 +87,9 @@ public class OpenSearchIndexScan extends TableScanOperator implements Serializab
   }
 
   private void fetchNextBatch() {
+    long st = System.currentTimeMillis();
     OpenSearchResponse response = client.search(request);
+    System.out.println("Time taken : " + (System.currentTimeMillis() - st));
     if (!response.isEmpty()) {
       iterator = response.iterator();
     }

@@ -89,7 +89,7 @@ public class PPLService {
       PPLQueryRequest request,
       ResponseListener<QueryResponse> queryListener,
       ResponseListener<ExplainResponse> explainListener) {
-    log.info("ORIGINAL PPL {}", request.getRequest());
+    //log.info("ORIGINAL PPL {}", request.getRequest());
     // 1.Parse query and convert parse tree (CST) to abstract syntax tree (AST)
     ParseTree cst = parser.parse(request.getRequest());
     Statement statement =
@@ -101,10 +101,10 @@ public class PPLService {
                     .format(request.getFormat())
                     .build()));
 
-    log.info(
-        "[{}] Incoming request {}",
-        QueryContext.getRequestId(),
-        anonymizer.anonymizeStatement(statement));
+//    log.info(
+//        "[{}] Incoming request {}",
+//        QueryContext.getRequestId(),
+//        anonymizer.anonymizeStatement(statement));
 
     return queryExecutionFactory.create(statement, queryListener, explainListener);
   }

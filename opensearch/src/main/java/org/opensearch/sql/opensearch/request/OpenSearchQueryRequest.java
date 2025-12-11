@@ -272,7 +272,7 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
     exprValueFactory =
         new OpenSearchExprValueFactory(
             index.getFieldOpenSearchTypes(), index.isFieldTypeTolerance());
-    
+
     // RelNode tree is not serialized/deserialized for now
     // It is only used during the initial query execution
     this.pushedDownRelNodeTree = null;
@@ -417,6 +417,7 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
   }
 
     public static byte[] convertToSubstraitAndSerialize(RelNode relNode) {
+       relNode = null;
         if (relNode == null) {
             LOGGER.info("RelNode is null, retrieving from ThreadLocal (CalciteToolsHelper.OpenSearchRelRunners)");
             relNode = CalciteToolsHelper.OpenSearchRelRunners.getCurrentRelNode();
@@ -424,7 +425,7 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
             LOGGER.info("RelNode provided directly from pushedDownRelNodeTree");
         }
         CalciteToolsHelper.OpenSearchRelRunners.clearCurrentRelNode();
-        LOGGER.info("Calcite Logical Plan before Conversion\n {}", RelOptUtil.toString(relNode));
+        //LOGGER.info("Calcite Logical Plan before Conversion\n {}", RelOptUtil.toString(relNode));
 
         // Preprocess the Calcite plan
         relNode = preprocessRelNodes(relNode);
@@ -435,7 +436,7 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
         // Support to convert COUNT(DISTINCT) to APPROX_COUNT_DISTINCT for partial results
         relNode = convertCountDistinctToApprox(relNode);
 
-        LOGGER.info("Calcite Logical Plan after Conversion\n {}", RelOptUtil.toString(relNode));
+        //LOGGER.info("Calcite Logical Plan after Conversion\n {}", RelOptUtil.toString(relNode));
 
         long startTimeSubstrait = System.nanoTime();
         // Substrait conversion
@@ -474,8 +475,8 @@ public class OpenSearchQueryRequest implements OpenSearchRequest {
         // This enables serialization, storage, and cross-system communication
         PlanProtoConverter planProtoConverter = new PlanProtoConverter();
         io.substrait.proto.Plan substraitPlanProtoModified = planProtoConverter.toProto(modifiedPlan);
-        LOGGER.info("Time taken to convert to Substrait convert (ms) {}", (endTimeSubstraitConvert-startTimeSubstrait)/1000000);
-        LOGGER.info("Substrait Logical Plan \n {}", substraitPlanProtoModified.toString());
+        //LOGGER.info("Time taken to convert to Substrait convert (ms) {}", (endTimeSubstraitConvert-startTimeSubstrait)/1000000);
+        //LOGGER.info("Substrait Logical Plan \n {}", substraitPlanProtoModified.toString());
         return substraitPlanProtoModified.toByteArray();
     }
 

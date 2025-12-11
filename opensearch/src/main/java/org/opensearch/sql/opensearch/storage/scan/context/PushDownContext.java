@@ -170,7 +170,7 @@ public class PushDownContext extends AbstractCollection<PushDownOperation> {
           if (storedRelNode != null) {
               RelNode before = current;
               current = replaceInput(storedRelNode, current);
-              LOGGER.info("{} being added as input to {}", before, current);
+              //LOGGER.info("{} being added as input to {}", before, current);
           }
       }
       return current;
